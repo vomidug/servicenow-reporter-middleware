@@ -36,6 +36,14 @@ type Config struct {
 	Login string
 	Password string
 	Period int
+	InfluxURL string
+	Redisurl string
+	Redispassword string
+	Redisdb int
+	influxdbname string
+	influxmeasurementname string
+	influxloginpasswordtoken string
+	influxorgname string
 }
 
 func compareSingle(first Incident, second Incident) bool {
