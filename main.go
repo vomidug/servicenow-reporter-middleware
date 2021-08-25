@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"crypto/tls"
 	"io/ioutil"
 	"encoding/json"
 	"log"
@@ -118,7 +119,13 @@ func run(config Config) {
         DB:       config.Redisdb,
     })
 
-	client := &http.Client{}
+	client := &http.Client{
+		    Transport: &http.Transport{
+			TLSClientConfig: &tls.Config{
+				InsecureSkipVerify: true,
+			},
+		},
+	}
 
 	oldjson, err := rdb.Get(ctx, "cache").Result()
     if err != nil { panic(err) }
