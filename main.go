@@ -182,3 +182,21 @@ func run(config Config) {
 	fmt.Println(disappeared)
 
 }
+
+func main() {
+
+	jsonFile, err := os.Open("config.json")
+	if err != nil {
+		fmt.Println(err)
+	}
+	defer jsonFile.Close()
+	jsonstr,_ := ioutil.ReadAll(jsonFile)
+	config := Config{}
+	json.Unmarshal(jsonstr, &config)
+
+	for {
+		run(config)
+		time.Sleep( time.Duration(config.Period) * time.Second )
+	}
+	
+}
