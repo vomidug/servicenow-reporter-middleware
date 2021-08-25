@@ -99,16 +99,17 @@ func init(params) int {
 }
 */
 
-	jsonFile, err := os.Open("config.json")
+func run(config Config) {
+
+	usersMap := make(map[string]string)
+	
+	jsonUsers, err := os.Open("users.json")
 	if err != nil {
 		fmt.Println(err)
 	}
-	defer jsonFile.Close()
-	jsonstr,_ := ioutil.ReadAll(jsonFile)
-
-	config := Config{}
-
-	json.Unmarshal(jsonstr, &config)
+	defer jsonUsers.Close()
+	jsonstr,_ := ioutil.ReadAll(jsonUsers)
+	json.Unmarshal(jsonstr, &usersMap)
 
 	var ctx = context.Background()
 	rdb := redis.NewClient(&redis.Options{
