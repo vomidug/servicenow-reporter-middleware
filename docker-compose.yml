@@ -1,0 +1,14 @@
+version: '3.4'
+services:
+  api:
+    build: .
+    restart: unless-stopped
+    volumes: 
+    - ./config.json:/config.json
+    - ./users.json:/users.json
+    depends_on:
+    - redis
+
+  redis:
+    image: 'redis:alpine'
+    restart: unless-stopped
