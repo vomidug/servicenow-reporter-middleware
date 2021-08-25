@@ -17,8 +17,18 @@ type Incident struct {
 	Number string
 	Short_description string
 	Priority int
-	Assigned_to string
+	Assigned_to SnowUser
 	State string
+}
+
+type SnowUser struct {
+	Link string
+	Value string
+}
+
+type User struct {
+	Value string
+	Name string
 }
 
 type Config struct {
