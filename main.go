@@ -93,7 +93,11 @@ func compareincs( oldincs []Incident, newincs []Incident ) ([]Incident, []Incide
 	return appeared, disappeared
 }
 
-func main() {
+/* will be decomposed later i swear a god
+func init(params) int {
+	
+}
+*/
 
 	jsonFile, err := os.Open("config.json")
 	if err != nil {
