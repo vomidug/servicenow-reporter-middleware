@@ -113,9 +113,9 @@ func run(config Config) {
 
 	var ctx = context.Background()
 	rdb := redis.NewClient(&redis.Options{
-        Addr:     "localhost:6379",
-        Password: "", // no password set
-        DB:       0,  // use default DB
+        Addr: config.Redisurl,
+        Password: config.Redispassword,
+        DB:       config.Redisdb,
     })
 
 	client := &http.Client{}
