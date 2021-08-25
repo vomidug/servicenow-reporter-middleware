@@ -140,6 +140,37 @@ func run(config Config) {
 	json.Unmarshal([]byte(oldjson), &oldincs)
 	json.Unmarshal([]byte(newjson), &newincs)
 
+	counts := make(map[string]int)
+	counts["unassigned"] = 0
+	
+	for e := range usersMap {
+		counts[usersMap[e]] = 0
+	}
+
+	for i := 0; i < len(newincs); i++ {
+		if newincs[i].Assigned_to == (SnowUser{}){
+			counts["unassigned"]++
+		} else {
+			counts[usersMap[newincs[i].Assigned_to.Value]]++
+		}
+	}
+
+	// TODO: find out how to replace this "mydb" to variable from config
+	influx := influxdb2.NewClient(config.InfluxURL, config.influxloginpasswordtoken)
+	writeAPI := influx.WriteAPIBlocking(config.influxorgname, "mydb" )
+	p := influxdb2.NewPointWithMeasurement("tickets")
+
+	for e := range counts {
+		p = p.AddField(e, counts[e])
+	}
+	p = p.AddField("number", len(newincs))
+	p = p.SetTime(time.Now())
+
+	err = writeAPI.WritePoint(context.Background(), p)
+	if err != nil {
+		fmt.Printf("Write error: %s\n", err.Error());
+	}
+
 	var appeared []Incident
 	var disappeared []Incident
 
