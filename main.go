@@ -75,7 +75,6 @@ func compareincs( oldincs []Incident, newincs []Incident ) ([]Incident, []Incide
 		}
 		if (!flag){
 			disappeared = append(disappeared, oldincs[i])
-			fmt.Println(disappeared)
 		}
 	}
 
