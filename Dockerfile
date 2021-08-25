@@ -5,7 +5,7 @@ COPY go.mod ./
 COPY go.sum ./
 RUN go mod download
 COPY *.go ./
-RUN go build  -ldflags "-s -w" -o /main
+RUN CGO_ENABLED=0 GOOS=linux go build  -ldflags "-s -w" -o /main
 RUN upx --best --lzma /main
 
 FROM scratch
