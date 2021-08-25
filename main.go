@@ -128,7 +128,7 @@ func run(config Config) {
 	}
 
 	oldjson, err := rdb.Get(ctx, "cache").Result()
-    if err != nil { panic(err) }
+    if err != nil { fmt.Println(err.Error()) }
 
 	req, err := http.NewRequest("GET", config.Url, nil)
 	req.Header.Add("Accept", `application/json`)
