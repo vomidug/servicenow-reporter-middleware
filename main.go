@@ -9,6 +9,8 @@ import (
     "context"
     "github.com/go-redis/redis/v8"
 	"os"
+	"time"
+    "github.com/influxdata/influxdb-client-go/v2"
 )
 
 type Incident struct {
