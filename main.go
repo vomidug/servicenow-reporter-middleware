@@ -233,7 +233,6 @@ func run(config Config) {
 		}
 		defer resp.Body.Close()
 		fmt.Println("response Status:", resp.Status)
-		body, _ := ioutil.ReadAll(resp.Body)
 
 	}
 
