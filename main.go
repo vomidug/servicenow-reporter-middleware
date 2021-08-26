@@ -226,7 +226,13 @@ func run(config Config) {
 		var jsonMsg = []byte(`{"text":"` + resultMsg + `","chat_id":"` + config.Chatid + `"}`)
 		req, err := http.NewRequest("POST", config.Telegramboturl, bytes.NewBuffer(jsonMsg))
 	    req.Header.Set("Content-Type", "application/json")
-		client := &http.Client{}
+		client := &http.Client{
+			Transport: &http.Transport{
+				TLSClientConfig: &tls.Config{
+					InsecureSkipVerify: true,
+				},
+			},
+		}
 		resp, err := client.Do(req)
 		if err != nil {
 			panic(err)
