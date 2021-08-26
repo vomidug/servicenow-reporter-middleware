@@ -41,10 +41,12 @@ type Config struct {
 	Redisurl string
 	Redispassword string
 	Redisdb int
-	influxdbname string
-	influxmeasurementname string
-	influxloginpasswordtoken string
-	influxorgname string
+	Influxdbname string
+	Influxmeasurementname string
+	Influxloginpasswordtoken string
+	Influxorgname string
+	Telegramboturl string
+	Chatid string
 }
 
 func compareSingle(first Incident, second Incident) bool {
@@ -163,8 +165,8 @@ func run(config Config) {
 	}
 
 	// TODO: find out how to replace this "mydb" to variable from config
-	influx := influxdb2.NewClient(config.InfluxURL, config.influxloginpasswordtoken)
-	writeAPI := influx.WriteAPIBlocking(config.influxorgname, "mydb" )
+	influx := influxdb2.NewClient(config.InfluxURL, config.Influxloginpasswordtoken)
+	writeAPI := influx.WriteAPIBlocking(config.Influxorgname, "mydb" )
 	p := influxdb2.NewPointWithMeasurement("tickets")
 
 	for e := range counts {
