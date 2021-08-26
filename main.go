@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"net/http"
 	"crypto/tls"
@@ -185,10 +186,56 @@ func run(config Config) {
 
 	appeared, disappeared = compareincs(oldincs, newincs)
 
-	fmt.Println("Appeared:")
-	fmt.Println(appeared)
-	fmt.Println("Disppeared")
-	fmt.Println(disappeared)
+	appFlag := false;
+	disappFlag := false;
+
+	for i := 0; i < len(appeared); i++ {
+		if appeared[i] != (Incident{}) {
+			appFlag = true
+			break
+		}
+	}
+
+	for i := 0; i < len(disappeared); i++ {
+		if disappeared[i]!=(Incident{}) {
+			disappFlag = true;
+			break
+		}
+	}
+
+	var resultMsg string
+
+	if appFlag {
+		for i := 0; i < len(appeared); i++ {
+			if appeared[i]!=(Incident{}) {
+				resultMsg = resultMsg + "+ " + appeared[i].Number + "\n"
+			}	
+		}
+	}
+
+	if disappFlag {
+		for i := 0; i < len(disappeared); i++ {
+			if disappeared[i] != (Incident{}) {
+				resultMsg = resultMsg + "- " + disappeared[i].Number + "\n"
+			}
+		}	
+	}
+
+	if resultMsg != "" {
+		
+		var jsonMsg = []byte(`{"text":"` + resultMsg + `","chat_id":"` + config.Chatid + `"}`)
+		req, err := http.NewRequest("POST", config.Telegramboturl, bytes.NewBuffer(jsonMsg))
+	    req.Header.Set("Content-Type", "application/json")
+		client := &http.Client{}
+		resp, err := client.Do(req)
+		if err != nil {
+			panic(err)
+		}
+		defer resp.Body.Close()
+		fmt.Println("response Status:", resp.Status)
+		body, _ := ioutil.ReadAll(resp.Body)
+
+	}
 
 }
 
