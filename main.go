@@ -71,26 +71,19 @@ func compareincs( oldincs []Incident, newincs []Incident ) ([]Incident, []Incide
 	appeared := make([]Incident, chooseGreater( len(oldincs), len(newincs) ))
 	disappeared := make([]Incident, chooseGreater( len(oldincs), len(newincs) ))
 	for i := 0; i < len(oldincs); i++ {
+
 		var flag bool = false;
+		
 		for j := 0; j < len(newincs); j++ {
 			if ( compareSingle( oldincs[i], newincs[j] ) ) {
 				flag = true
+			} else {
+				appeared = append(appeared, newincs[j])
 			}
 		}
+
 		if (!flag){
 			disappeared = append(disappeared, oldincs[i])
-		}
-	}
-
-	for i := 0; i < len(newincs); i++ {
-		var flag bool = false;
-		for j := 0; j < len(oldincs); j++ {
-			if ( compareSingle( newincs[i], oldincs[j] ) ) {
-				flag = true
-			}
-		}
-		if (!flag){
-			appeared = append(appeared, newincs[i])
 		}
 	}
 
